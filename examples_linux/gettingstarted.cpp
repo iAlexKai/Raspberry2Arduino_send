@@ -97,10 +97,13 @@ int main(int argc, char** argv){
   radio.setRetries(15,15);
   // Dump the configuration of the rf unit for debugging
   radio.printDetails();
+    
+    cout << "check p[oint A";
 
 
 /********* Role chooser ***********/
 
+/*
   printf("\n ************ Role Setup ***********\n");
   string input = "";
   char myChar = {0};
@@ -115,10 +118,12 @@ int main(int argc, char** argv){
 		role = role_ping_out;
 	}
   }
+    cout << "check p[oint B";*/
+
 /***********************************/
   // This simple sketch opens two pipes for these two nodes to communicate
   // back and forth.
-
+    role = role_ping_out;
     if ( !radioNumber )    {
       radio.openWritingPipe(pipes[0]);
       radio.openReadingPipe(1,pipes[1]);
@@ -130,6 +135,8 @@ int main(int argc, char** argv){
 	radio.startListening();
 	int count = 0;
 	// forever loop
+    cout << "check p[oint C";
+
 	while (1)
 	{
 		if (role == role_ping_out)
@@ -143,13 +150,21 @@ int main(int argc, char** argv){
 			unsigned long time = millis();
 			// The message must end with "!"
 			
-			char msg2send[] = "safe  39.92N, 116346E!";
+			//char msg2send[] = "safe  39.92N, 116346E!";
 			//sprintf(msg2send, "%d", count);
-			count++;
-			bool ok = radio.write( &msg2send, strlen(msg2send) );
-			printf("Have sent: %s\n", msg2send);
-			sleep(1);
 
+            string tmp_input;
+//			scanf("%s", tmp_input);
+  			getline(cin, tmp_input);
+	        const char* input_str = tmp_input.c_str();
+            
+            
+			count++;
+			//bool ok = radio.write( &msg2send, strlen(msg2send) );
+            bool ok = radio.write( input_str, strlen(input_str) );
+			printf("Have sent: %s\n", input_str);
+			sleep(1);
+         }
 
 		if ( role == role_pong_back )
 		{
